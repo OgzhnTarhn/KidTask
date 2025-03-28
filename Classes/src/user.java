@@ -3,7 +3,7 @@ public class user{
     String userID;
     String userRole;
 
-    public user(String userName, String userID, String userRole) {
+    public user(int points, int level, String userName, String userID, String userRole) {
         this.userName = userName;
         this.userID = userID;
         this.userRole = userRole;
