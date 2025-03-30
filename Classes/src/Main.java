@@ -13,7 +13,7 @@ public class Main {
         FileManager fileManager = new FileManager(parent, teacher, child);
 
         // commands.txt yolunu parametreden alabilir veya sabit verebilirsiniz
-        String cmdFile = "C:/Kullanıcılar/Oğuzhan/IdeaProjects/SENG272 project/Classes/src/commands.txt"; // Aynı klasörde
+        String cmdFile = "C:/Kullanıcılar/Oğuzhan/IdeaProjects/Seng272 project/Classes/src/commands"; // Aynı klasörde
         fileManager.loadCommands(cmdFile, taskManager, wishManager);
 
         System.out.println("\nProgram finished. Child points = " + child.getTotalPoints()
