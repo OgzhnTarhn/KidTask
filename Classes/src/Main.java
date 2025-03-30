@@ -1,34 +1,22 @@
-public class Main{
+public class Main {
     public static void main(String[] args) {
-        // Tek bir Child örneği
+        // Bir Parent, bir Teacher, bir Child oluşturalım
+        Parent parent = new Parent("P001", "Alice");
+        Teacher teacher = new Teacher("T001", "Bob");
         Child child = new Child("C001", "Charlie");
 
-        // Manager örnekleri
+        // Managerlar
         TaskManager taskManager = new TaskManager();
         WishManager wishManager = new WishManager();
 
-        // FileManager'a Child'ı veriyoruz (varsayılan çocuğa atamak için)
-        FileManager fileManager = new FileManager(child);
+        // FileManager (komutları parse edip Parent/Teacher/Child'a yönlendirecek)
+        FileManager fileManager = new FileManager(parent, teacher, child);
 
-        // commands.txt içindeki komutları yükleyelim
-        fileManager.loadCommands("commands.txt", taskManager, wishManager);
+        // commands.txt yolunu parametreden alabilir veya sabit verebilirsiniz
+        String cmdFile = "C:/Kullanıcılar/Oğuzhan/IdeaProjects/SENG272 project/Classes/src/commands.txt"; // Aynı klasörde
+        fileManager.loadCommands(cmdFile, taskManager, wishManager);
 
-        // Tüm Task'ları listeleyelim
-        System.out.println("\n--- All Tasks ---");
-        for (Task t : taskManager.getAllTasks()) {
-            System.out.println(t.toString());
-        }
-
-        // Tüm Wish'leri listeleyelim
-        System.out.println("\n--- All Wishes ---");
-        for (Wish w : wishManager.getAllWishes()) {
-            System.out.println(w.toString());
-        }
-
-        // Çocuğun seviyesi / puanı
-        System.out.println("\nChild total points: " + child.getTotalPoints());
-        System.out.println("Child current level: " + child.getCurrentLevel());
-
-        System.out.println("\nProgram finished.");
+        System.out.println("\nProgram finished. Child points = " + child.getTotalPoints()
+                + ", level = " + child.getCurrentLevel());
     }
 }

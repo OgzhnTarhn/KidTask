@@ -1,4 +1,0 @@
-ADD_TASK1 T 101 "Math Homework" "Solve pages 1-10" 2025-03-01 15:00 10
-ADD_TASK2 T 102 "Science Project" "Build a volcano" 2025-03-05 14:00 2025-03-05 16:00 15
-ADD_WISH1 W201 "New Lego Set" "150 TL"
-ADD_WISH2 W202 "Go to Cinema" "Popcorn included" 2025-03-10 14:00 2025-03-10 16:00
