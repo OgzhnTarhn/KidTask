@@ -31,6 +31,152 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+    public void loadTasksFromFile(String filePath, TaskManager taskManager) {
+        /*
+          Beklenen format (örnek):
+           TASK1;101;"Math Homework";"Solve pages 1-10";2025-03-01T15:00;10
+           TASK2;102;"Science Project";"Build a volcano";2025-03-05T14:00;2025-03-05T16:00;15
+
+          - TASK1 =>
+              0: "TASK1"
+              1: "101"
+              2: "\"Math Homework\""     (tırnaklı)
+              3: "\"Solve pages 1-10\"" (tırnaklı)
+              4: "2025-03-01T15:00"     (deadline)
+              5: "10"                   (points)
+
+          - TASK2 =>
+              0: "TASK2"
+              1: "102"
+              2: "\"Science Project\""
+              3: "\"Build a volcano\""
+              4: "2025-03-05T14:00"
+              5: "2025-03-05T16:00"
+              6: "15"
+        */
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                // Yorum veya boş satır atla
+                if (line.isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
+
+                String[] parts = line.split(";");
+                String taskTypeStr = parts[0]; // TASK1 / TASK2
+                String taskId = parts[1];
+                String title = parts[2].replace("\"", "");
+                String description = parts[3].replace("\"", "");
+
+                TaskType tType = (taskTypeStr.equals("TASK1")) ? TaskType.TASK1 : TaskType.TASK2;
+
+                if (tType == TaskType.TASK1) {
+                    // format => parts[4]: "2025-03-01T15:00", parts[5]: "10"
+                    LocalDateTime deadline = LocalDateTime.parse(parts[4]);
+                    int points = Integer.parseInt(parts[5]);
+
+                    // Varsayılan: parent eklemiş olsun
+                    Task newTask = new Task(taskId, title, description, tType,
+                            deadline, null, null,
+                            points, parent);
+
+                    // child'a ata
+                    newTask.setAssignedChild(child);
+                    child.addTask(newTask);
+                    taskManager.addTask(newTask);
+
+                    System.out.println("Loaded TASK1 from file: " + newTask.toString());
+                } else {
+                    // TASK2
+                    // format => parts[4]: "2025-03-05T14:00", parts[5]: "2025-03-05T16:00", parts[6]: "15"
+                    LocalDateTime startDateTime = LocalDateTime.parse(parts[4]);
+                    LocalDateTime endDateTime = LocalDateTime.parse(parts[5]);
+                    int points = Integer.parseInt(parts[6]);
+
+                    // Varsayılan: teacher eklemiş olsun
+                    Task newTask = new Task(taskId, title, description, tType,
+                            startDateTime, // Bu konumda "deadline" parametresi
+                            startDateTime, // startTime
+                            endDateTime,
+                            points, teacher);
+
+                    newTask.setAssignedChild(child);
+                    child.addTask(newTask);
+                    taskManager.addTask(newTask);
+
+                    System.out.println("Loaded TASK2 from file: " + newTask.toString());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // 2) WISHES.TXT DOSYASINDAN YÜKLEME
+    // -------------------------------------------------------------------------
+    public void loadWishesFromFile(String filePath, WishManager wishManager) {
+        /*
+          Beklenen format (örnek):
+            WISH1;W201;"Lego Set";"150 TL";null;null
+            WISH2;W202;"Cinema Night";"Popcorn";2025-04-10T14:00;2025-04-10T16:00
+
+          - WISH1 =>
+              0: "WISH1"
+              1: "W201"
+              2: "\"Lego Set\""
+              3: "\"150 TL\""
+              4: "null"
+              5: "null"
+          - WISH2 =>
+              0: "WISH2"
+              1: "W202"
+              2: "\"Cinema Night\""
+              3: "\"Popcorn\""
+              4: "2025-04-10T14:00"
+              5: "2025-04-10T16:00"
+        */
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                // Yorum veya boş satır atla
+                if (line.isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
+
+                String[] parts = line.split(";");
+                String wishTypeStr = parts[0]; // WISH1 / WISH2
+                String wishId = parts[1];
+                String title = parts[2].replace("\"", "");
+                String description = parts[3].replace("\"", "");
+
+                WishType wType = (wishTypeStr.equals("WISH1")) ? WishType.WISH1 : WishType.WISH2;
+
+                // Start/End time
+                LocalDateTime startTime = null;
+                LocalDateTime endTime = null;
+
+                if (!parts[4].equals("null")) {
+                    startTime = LocalDateTime.parse(parts[4]);
+                }
+                if (!parts[5].equals("null")) {
+                    endTime = LocalDateTime.parse(parts[5]);
+                }
+
+                Wish newWish = new Wish(wishId, title, description, wType,
+                        startTime, endTime, child);
+
+                child.addWish(newWish);
+                wishManager.addWish(newWish);
+
+                System.out.println("Loaded " + wishTypeStr + " from file: " + newWish.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void processCommand(String cmd,
                                 TaskManager taskManager,

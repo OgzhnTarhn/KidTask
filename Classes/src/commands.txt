@@ -1,39 +1,16 @@
-# 1) İki görev ekliyoruz: Biri Teacher (T), biri Parent (F) tarafından.
-ADD_TASK1 T 101 "Math Homework" "Solve pages 1-10" 2025-03-01 15:00 10
-ADD_TASK2 F 102 "Science Project" "Build a volcano" 2025-03-05 14:00 2025-03-05 16:00 15
-
-# 2) Görevleri listeleyelim (tümü, henüz yapılmadı).
+# Commands.txt
 LIST_ALL_TASKS
-
-# 3) Task 101’i (Math Homework) Child tamamlıyor, sonra Teacher/Parent onayı.
 TASK_DONE 101
 TASK_CHECKED 101 5
-
-# 4) Çocuğun mevcut puanını ve seviyesini bastıralım.
+LIST_ALL_WISHES
+ADD_BUDGET_COIN 20
 PRINT_BUDGET
 PRINT_STATUS
-
-# 5) Parent ekstra puan ekliyor.
-ADD_BUDGET_COIN 25
-PRINT_BUDGET
-PRINT_STATUS
-
-# 6) Bir wish (WISH1=ürün) ekleyip onaylıyoruz (level 2'den itibaren geçerli).
-ADD_WISH1 W201 "Lego Set" "150 TL"
 WISH_CHECKED W201 APPROVED 2
-
-# 7) Bir başka wish (WISH2=aktivite) eklenip reddediliyor.
-ADD_WISH2 W202 "Cinema Night" "Popcorn" 2025-04-10 14:00 2025-04-10 16:00
 WISH_CHECKED W202 REJECTED
-
-# 8) Task 102’yi (Science Project) Child tamamlıyor ve Teacher/Parent onaylıyor (rating=3).
 TASK_DONE 102
-TASK_CHECKED 102 3
-
-# 9) Tüm görev ve dilekleri tekrar listeleyelim.
+TASK_CHECKED 102 4
 LIST_ALL_TASKS
 LIST_ALL_WISHES
-
-# 10) Son olarak tekrar çocuğun seviyesini ve puanını görelim.
 PRINT_STATUS
 PRINT_BUDGET
