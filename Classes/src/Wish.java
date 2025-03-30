@@ -33,20 +33,41 @@ public class Wish {
     public String getWishId() {
         return wishId;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public WishType getWishType() {
+        return wishType;
+    }
+
     public WishStatus getStatus() {
         return status;
     }
+
     public void setStatus(WishStatus status) {
         this.status = status;
     }
+
     public int getRequiredLevel() {
         return requiredLevel;
     }
+
     public void setRequiredLevel(int requiredLevel) {
         this.requiredLevel = requiredLevel;
     }
+
     public Child getChild() {
         return child;
     }
-    // Diğer getter/setter...
+
+    @Override
+    public String toString() {
+        return "Wish[" + wishId + ", " + title + ", " + wishType + ", status=" + status + "]";
+    }
 }

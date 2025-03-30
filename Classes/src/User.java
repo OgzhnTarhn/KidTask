@@ -1,10 +1,13 @@
 public abstract class User {
     private String userId;
     private String name;
+    private String userRole; // Yeni alan
 
-    public User(String userId, String name) {
+    // Yeni constructor: userRole'yu da alıyor
+    public User(String userId, String name, String userRole) {
         this.userId = userId;
         this.name = name;
+        this.userRole = userRole;
     }
 
     public String getUserId() {
@@ -13,6 +16,13 @@ public abstract class User {
 
     public String getName() {
         return name;
+    }
 
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }

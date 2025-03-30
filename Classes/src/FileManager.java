@@ -35,6 +35,9 @@ public class FileManager {
     private void processCommand(String cmd,
                                 TaskManager taskManager,
                                 WishManager wishManager) {
+        if (cmd.startsWith("#")) {
+            return;
+        }
         // Basit bir substring / split yaklaşımı
         if (cmd.startsWith("ADD_TASK1")) {
             parseAddTask1(cmd, taskManager);

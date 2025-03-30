@@ -3,7 +3,8 @@ import java.time.LocalDateTime;
 public class Teacher extends User {
 
     public Teacher(String userId, String name) {
-        super(userId, name);
+        // Rol sabit: "Teacher"
+        super(userId, name, "Teacher");
     }
 
     // Teacher da aynı Parent gibi görev ekleyebilir

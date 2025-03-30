@@ -1,10 +1,10 @@
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Parent extends User {
 
     public Parent(String userId, String name) {
-        super(userId, name);
+        // Rol sabit: "Parent"
+        super(userId, name, "Parent");
     }
 
     // Örnek: Parent bir Task yaratabilir (Görevi Child'a atar).
@@ -62,6 +62,7 @@ public class Parent extends User {
 
     // Ek puan verme
     public void addBudgetCoin(Child child, int extraPoints) {
+
         child.addPoints(extraPoints);
     }
 }

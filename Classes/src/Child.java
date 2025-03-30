@@ -9,7 +9,8 @@ public class Child extends User {
     private List<Wish> wishes;
 
     public Child(String userId, String name) {
-        super(userId, name);
+        // Rol sabit: "Child"
+        super(userId, name, "Child");
         this.tasks = new ArrayList<>();
         this.wishes = new ArrayList<>();
         this.currentLevel = 1;
@@ -53,7 +54,6 @@ public class Child extends User {
 
     // Rating ortalamaya göre level hesaplaması
     public void updateLevelByRating(int newRating) {
-        // Onaylanmış task sayısı:
         int approvedTasksCount = 0;
         for (Task t : tasks) {
             if (t.getStatus() == TaskStatus.APPROVED) {
@@ -68,7 +68,6 @@ public class Child extends User {
             this.averageRating = newRating;
         }
 
-        // Basit bir seviye mantığı
         if (averageRating < 2.0) {
             currentLevel = 1;
         } else if (averageRating < 3.0) {
