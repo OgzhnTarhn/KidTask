@@ -25,7 +25,7 @@ public class TaskManager {
         return tasks;
     }
 
-    // Görevi DONE yapma (TASK_DONE)
+
     public void markTaskDone(String taskId) {
         Task t = getTaskById(taskId);
         if (t != null && t.getStatus() == TaskStatus.TODO) {
@@ -34,4 +34,5 @@ public class TaskManager {
     }
 
     // İsterseniz günlük/haftalık filtre vs. ekleyebilirsiniz
+    // Buraya ekstra eklemeler yapılacak
 }

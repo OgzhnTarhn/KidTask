@@ -3,7 +3,6 @@ public abstract class User {
     private String name;
     private String userRole; // Yeni alan
 
-    // Yeni constructor: userRole'yu da alıyor
     public User(String userId, String name, String userRole) {
         this.userId = userId;
         this.name = name;

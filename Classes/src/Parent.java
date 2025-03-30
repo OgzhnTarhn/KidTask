@@ -30,7 +30,6 @@ public class Parent extends User {
         return newTask;
     }
 
-    // Örnek: Parent bir görevi onaylayabilir (TASK_CHECKED)
     public void approveTask(Task task, int rating) {
         if (task.getStatus() == TaskStatus.DONE) {
             task.setStatus(TaskStatus.APPROVED);
@@ -45,7 +44,6 @@ public class Parent extends User {
         }
     }
 
-    // Bir Wish'i (dilek) onaylama
     public void approveWish(Wish wish, int requiredLevel) {
         if (wish.getStatus() == WishStatus.PENDING) {
             wish.setStatus(WishStatus.APPROVED);
@@ -53,14 +51,12 @@ public class Parent extends User {
         }
     }
 
-    // Bir Wish'i reddetme
     public void rejectWish(Wish wish) {
         if (wish.getStatus() == WishStatus.PENDING) {
             wish.setStatus(WishStatus.REJECTED);
         }
     }
 
-    // Ek puan verme
     public void addBudgetCoin(Child child, int extraPoints) {
 
         child.addPoints(extraPoints);

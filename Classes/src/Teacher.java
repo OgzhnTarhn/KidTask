@@ -7,7 +7,6 @@ public class Teacher extends User {
         super(userId, name, "Teacher");
     }
 
-    // Teacher da aynı Parent gibi görev ekleyebilir
     public Task createTask(String taskId,
                            String title,
                            String description,
@@ -28,7 +27,6 @@ public class Teacher extends User {
         return newTask;
     }
 
-    // Teacher da görevi onaylayabilir
     public void approveTask(Task task, int rating) {
         if (task.getStatus() == TaskStatus.DONE) {
             task.setStatus(TaskStatus.APPROVED);
@@ -40,5 +38,10 @@ public class Teacher extends User {
                 child.updateLevelByRating(rating);
             }
         }
+    }
+
+    public void addBudgetCoin(Child child, int extraPoints) {
+
+        child.addPoints(extraPoints);
     }
 }
