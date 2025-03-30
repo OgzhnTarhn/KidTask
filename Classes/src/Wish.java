@@ -6,12 +6,9 @@ public class Wish {
     private String description;
     private WishType wishType;
     private WishStatus status;
-    // WISH2 için tarih-saat
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    // Hangi seviyede aktif olacağı
     private int requiredLevel;
-    // Bu wish hangi çocuğa ait?
     private Child child;
 
     public Wish(String wishId,
@@ -21,6 +18,7 @@ public class Wish {
                 LocalDateTime startTime,
                 LocalDateTime endTime,
                 Child child) {
+
         this.wishId = wishId;
         this.title = title;
         this.description = description;
@@ -28,18 +26,12 @@ public class Wish {
         this.startTime = startTime;
         this.endTime = endTime;
         this.status = WishStatus.PENDING;
-        this.requiredLevel = 1; // default
+        this.requiredLevel = 1;
         this.child = child;
     }
 
     public String getWishId() {
         return wishId;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public WishType getWishType() {
-        return wishType;
     }
     public WishStatus getStatus() {
         return status;
@@ -56,4 +48,5 @@ public class Wish {
     public Child getChild() {
         return child;
     }
+    // Diğer getter/setter...
 }

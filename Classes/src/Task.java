@@ -5,17 +5,13 @@ public class Task {
     private String title;
     private String description;
     private TaskType taskType;
-    private LocalDateTime deadline;    // TASK1 için
-    private LocalDateTime startTime;   // TASK2 başlangıç zamanı
-    private LocalDateTime endTime;     // TASK2 bitiş zamanı
+    private LocalDateTime deadline;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private int points;
-    private int rating;                // Onaylanınca verilir
+    private int rating;
     private TaskStatus status;
-
-    // Görevi kimin eklediğini takip etmek istersek
-    private User assignedBy;           // Parent veya Teacher
-
-    // Görevin hangi çocuğa ait olduğu (SENG 272 doc: Child, Parent, Teacher)
+    private User assignedBy;
     private Child assignedChild;
 
     public Task(String taskId,
@@ -39,6 +35,7 @@ public class Task {
         this.assignedBy = assignedBy;
     }
 
+    // Getter metodları (eksik kalmasın)
     public String getTaskId() {
         return taskId;
     }
@@ -69,19 +66,27 @@ public class Task {
     public TaskStatus getStatus() {
         return status;
     }
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
     public User getAssignedBy() {
         return assignedBy;
     }
     public Child getAssignedChild() {
         return assignedChild;
     }
-    public void setAssignedChild(Child child) {
-        this.assignedChild = child;
+
+    // Setter metodları
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+    public void setAssignedChild(Child assignedChild) {
+        this.assignedChild = assignedChild;
+    }
+
+    // toString (isteğe bağlı, debug amaçlı)
+    @Override
+    public String toString() {
+        return "Task[" + taskId + ", " + title + ", " + taskType + ", status=" + status + "]";
     }
 }
