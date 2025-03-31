@@ -1,7 +1,7 @@
 # Wishes.txt
-# WISH1;WishID;"Title";"Description";startTime;endTime
-# WISH2;WishID;"Title";"Description";startTime;endTime
-# eğer "null" görürsek => orada LocalDateTime yok demektir.
+# WISH1;WID;"Title";"Desc";start;end
+# WISH2;WID;"Title";"Desc";start;end
 
 WISH1;W201;"Lego Set";"150 TL";null;null
 WISH2;W202;"Cinema Night";"Popcorn";2025-04-10T14:00;2025-04-10T16:00
+WISH1;W203;"New Book";"Fantasy series";null;null

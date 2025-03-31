@@ -1,16 +1,34 @@
 # Commands.txt
-LIST_ALL_TASKS
+
+# 1) Daily ve Weekly listelemeler
+LIST_ALL_TASKS D
+LIST_ALL_TASKS V
+
+# 2) Yeni görev eklemeleri
+ADD_TASK1 T 101 "Math Homework" "Solve pages" 2025-03-01 15:00 10
+ADD_TASK2 F 102 "Painting" "Draw a scenery" 2025-03-06 14:00 2025-03-06 15:30 8
+
+# 3) Görevleri daily liste görelim
+LIST_ALL_TASKS D
+
+# 4) Görev tamamla / onayla
 TASK_DONE 101
-TASK_CHECKED 101 5
+TASK_CHECKED 101 4
+
+# 5) Wish ekleme
+ADD_WISH1 W201 "Lego Set" "150 TL"
+ADD_WISH2 W202 "Cinema Night" "Popcorn" 2025-04-10 14:00 2025-04-10 16:00
+
+# 6) Tüm dilekler?
 LIST_ALL_WISHES
+
+# 7) Onay / red
+WISH_CHECKED W202 APPROVED 3
+
+# 8) Weekly liste
+LIST_ALL_TASKS V
+
+# 9) Level / Budget
 ADD_BUDGET_COIN 20
 PRINT_BUDGET
 PRINT_STATUS
-WISH_CHECKED W201 APPROVED 2
-WISH_CHECKED W202 REJECTED
-TASK_DONE 102
-TASK_CHECKED 102 4
-LIST_ALL_TASKS
-LIST_ALL_WISHES
-PRINT_STATUS
-PRINT_BUDGET
