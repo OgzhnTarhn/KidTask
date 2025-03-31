@@ -35,66 +35,70 @@ public class TaskManager {
         }
     }
 
-    // ----------------------------------------------------
-    // DAILY & WEEKLY LİSTE METOTLARI
-    // ----------------------------------------------------
+    // -------------------------------------------------------------------------
+    // FİLTRE METOTLARI
+    // -------------------------------------------------------------------------
     public List<Task> getDailyTasks() {
-        List<Task> dailyList = new ArrayList<>();
+        // Bugünün tarihine denk gelenleri alıyoruz
         LocalDate today = LocalDate.now();
+        List<Task> result = new ArrayList<>();
         for (Task t : tasks) {
             if (t.getTaskType() == TaskType.TASK1) {
-                // TASK1 => sadece deadline'a göre kontrol edelim
-                LocalDateTime deadline = t.getDeadline();
-                if (deadline != null && deadline.toLocalDate().equals(today)) {
-                    dailyList.add(t);
+                // TASK1 => deadline bazlı
+                if (t.getDeadline() != null && t.getDeadline().toLocalDate().equals(today)) {
+                    result.add(t);
                 }
             } else {
-                // TASK2 => startTime veya endTime bugünün tarihine denk gelirse ekleyelim
-                LocalDateTime start = t.getStartTime();
-                LocalDateTime end = t.getEndTime();
-                if ((start != null && start.toLocalDate().equals(today))
-                        || (end != null && end.toLocalDate().equals(today))) {
-                    dailyList.add(t);
+                // TASK2 => startTime veya endTime bugünün tarihi ise
+                if (t.getStartTime() != null && t.getStartTime().toLocalDate().equals(today)) {
+                    result.add(t);
+                } else if (t.getEndTime() != null && t.getEndTime().toLocalDate().equals(today)) {
+                    result.add(t);
                 }
             }
         }
-        return dailyList;
+        return result;
     }
 
     public List<Task> getWeeklyTasks() {
-        List<Task> weeklyList = new ArrayList<>();
+        // Bugün + 7 gün
         LocalDate today = LocalDate.now();
         LocalDate weekLater = today.plusDays(7);
+        List<Task> result = new ArrayList<>();
 
         for (Task t : tasks) {
             if (t.getTaskType() == TaskType.TASK1) {
-                LocalDateTime deadline = t.getDeadline();
-                if (deadline != null) {
-                    // deadline bugün <= deadline <= bugünden 7 gün sonrasına kadar
-                    LocalDate dlDate = deadline.toLocalDate();
-                    if (!dlDate.isBefore(today) && !dlDate.isAfter(weekLater)) {
-                        weeklyList.add(t);
+                LocalDateTime dl = t.getDeadline();
+                if (dl != null) {
+                    LocalDate d = dl.toLocalDate();
+                    // eğer d >= today ve d <= weekLater
+                    if (!d.isBefore(today) && !d.isAfter(weekLater)) {
+                        result.add(t);
                     }
                 }
             } else {
-                // TASK2 => start veya end bugünden sonraki 7 gün içinde mi?
-                LocalDateTime start = t.getStartTime();
-                LocalDateTime end = t.getEndTime();
-                if (start != null) {
-                    LocalDate sDate = start.toLocalDate();
+                // TASK2 => startTime veya endTime 7 gün içinde mi?
+                LocalDateTime st = t.getStartTime();
+                LocalDateTime en = t.getEndTime();
+                boolean inRange = false;
+
+                if (st != null) {
+                    LocalDate sDate = st.toLocalDate();
                     if (!sDate.isBefore(today) && !sDate.isAfter(weekLater)) {
-                        weeklyList.add(t);
-                        continue;
+                        inRange = true;
                     }
                 }
-                if (end != null) {
-                    LocalDate eDate = end.toLocalDate();
+                if (en != null && !inRange) {
+                    LocalDate eDate = en.toLocalDate();
                     if (!eDate.isBefore(today) && !eDate.isAfter(weekLater)) {
-                        weeklyList.add(t);
+                        inRange = true;
                     }
+                }
+                if (inRange) {
+                    result.add(t);
                 }
             }
         }
-        return weeklyList;
+        return result;
     }
 }

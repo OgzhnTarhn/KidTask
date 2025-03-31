@@ -3,6 +3,7 @@ import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class FileManager {
     private Parent parent;
@@ -142,36 +143,38 @@ public class FileManager {
 
     // --- Yeni parseListAllTasks metodu (D / V)
     private void parseListAllTasks(String cmd, TaskManager tm) {
-        // Örnek komutlar:
-        // LIST_ALL_TASKS
-        // LIST_ALL_TASKS D
-        // LIST_ALL_TASKS V
-
-        String rest = cmd.substring("LIST_ALL_TASKS".length()).trim(); // mesela "D" veya "V"
+        // cmd örn: "LIST_ALL_TASKS D" veya "LIST_ALL_TASKS W"
+        String rest = cmd.substring("LIST_ALL_TASKS".length()).trim();
         if (rest.isEmpty()) {
-            // Normal listeleme (hepsi)
-            for (Task t : tm.getAllTasks()) {
-                System.out.println(t.toString());
+            // Parametre yoksa hata veriyor
+            System.out.println("Error: Missing parameter. Use 'LIST_ALL_TASKS D' or 'LIST_ALL_TASKS W'.");
+            return;
+        }
+
+        if (rest.equals("D")) {
+            System.out.println("Daily tasks:");
+            List<Task> daily = tm.getDailyTasks();
+            if (daily.isEmpty()) {
+                System.out.println("No tasks found for today's date.");
+            } else {
+                for (Task t : daily) {
+                    System.out.println(t.toString());
+                }
+            }
+        } else if (rest.equals("V")) {
+            System.out.println("Weekly tasks:");
+            List<Task> weekly = tm.getWeeklyTasks();
+            if (weekly.isEmpty()) {
+                System.out.println("No tasks found in the next 7 days range.");
+            } else {
+                for (Task t : weekly) {
+                    System.out.println(t.toString());
+                }
             }
         } else {
-            if (rest.equals("D")) {
-                // Günlük liste
-                System.out.println("Daily tasks:");
-                for (Task t : tm.getDailyTasks()) {
-                    System.out.println(t.toString());
-                }
-            } else if (rest.equals("V")) {
-                // Haftalık liste
-                System.out.println("Weekly tasks:");
-                for (Task t : tm.getWeeklyTasks()) {
-                    System.out.println(t.toString());
-                }
-            } else {
-                System.out.println("Unknown parameter: " + rest);
-            }
+            System.out.println("Unknown parameter: " + rest + ". Only 'D' or 'W' are allowed.");
         }
     }
-
     private void parseAddTask1(String line, TaskManager tm) {
         // ADD_TASK1 T 201 "Reading Homework" "Read pages..." 2025-03-05 16:00 8
         try {

@@ -5,8 +5,8 @@ LIST_ALL_TASKS D
 LIST_ALL_TASKS V
 
 # 2) Yeni görev eklemeleri
-ADD_TASK1 T 101 "Math Homework" "Solve pages" 2025-03-01 15:00 10
-ADD_TASK2 F 102 "Painting" "Draw a scenery" 2025-03-06 14:00 2025-03-06 15:30 8
+ADD_TASK1 T 101 "English Homework" "Learn a new content" 2025-03-31 23:56 10
+ADD_TASK2 F 102 "Painting" "Draw a scenery" 2025-04-05 14:00 2025-03-06 15:30 8
 
 # 3) Görevleri daily liste görelim
 LIST_ALL_TASKS D
