@@ -133,9 +133,7 @@ public class FileManager {
         } else if (cmd.startsWith("LIST_ALL_TASKS")) {
             parseListAllTasks(cmd, taskManager);
         } else if (cmd.startsWith("LIST_ALL_WISHES")) {
-            for (Wish w : wishManager.getAllWishes()) {
-                System.out.println(w.toString());
-            }
+            parseListAllWishes(cmd, wishManager);
         } else {
             System.out.println("Unknown command: " + cmd);
         }
@@ -441,6 +439,19 @@ public class FileManager {
             System.out.println("Added budget coin: " + val);
         } catch (Exception e) {
             System.out.println("Error parseAddBudgetCoin: " + e.getMessage());
+        }
+    }
+    private void parseListAllWishes(String cmd, WishManager wishManager) {
+        // Komut tam olarak "LIST_ALL_WISHES" ise:
+        // Başka parametre beklemiyorsak direk listeleyebiliriz.
+        System.out.println("Wishes:");
+        List<Wish> allWishes = wishManager.getAllWishes();
+        if (allWishes.isEmpty()) {
+            System.out.println("No wishes found.");
+        } else {
+            for (Wish w : allWishes) {
+                System.out.println(w.toString());
+            }
         }
     }
 
