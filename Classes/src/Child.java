@@ -52,7 +52,7 @@ public class Child extends User {
             this.totalPoints -= amount;
             return true;
         } else {
-            return false; // Yeterli bütçe yok
+            return false; // Yetersiz bakiye
         }
     }
 

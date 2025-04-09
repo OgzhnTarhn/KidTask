@@ -326,64 +326,58 @@ public class FileManager {
         }
     }
 
-    private void parseAddWish1(String line, WishManager wm) {
-        // Format: ADD_WISH1 W102 "Lego Set" "Price:150TL, Brand:LEGO"
-        // (WISH1 => ürün, price eklenecek, start/end time yok)
-
+    private void parseAddWish1(String line, WishManager wishManager) {
+        // Format: ADD_WISH1 W201 "Lego Set" "Price:150TL, Brand:LEGO"
         try {
             String rest = line.substring("ADD_WISH1".length()).trim();
-            // 1) Wish ID
+            // Wish ID
             int sp = rest.indexOf(' ');
             String wishId = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
 
-            // 2) Title
+            // Title
             String title = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
-            // 3) Description
+            // Desc
             String desc = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
-            // Wish oluştur (WISH1 => ürün, startTime / endTime yok)
+            // WISH1 => product => start/end = null
             Wish w = new Wish(wishId, title, desc,
                     WishType.WISH1,
-                    null, null, // no start/end time
+                    null, null,
                     child);
 
-            // Price parse edelim (desc => "Price:150TL, Brand:LEGO")
-            int priceValue = parsePriceFromDescription(desc);
-            w.setPrice(priceValue);
+            // Price parse
+            int priceVal = parsePriceFromDescription(desc);
+            w.setPrice(priceVal);
 
-            // Çocuğun dilek listesine ekleyelim
+            // child / manager
             child.addWish(w);
-            wm.addWish(w);
-
+            wishManager.addWish(w);
             System.out.println("ADD_WISH1 -> " + w.toString());
         } catch (Exception e) {
             System.out.println("Error parseAddWish1: " + e.getMessage());
         }
     }
 
-    private void parseAddWish2(String line, WishManager wm) {
-        // Format: ADD_WISH2 W103 "Go to the Cinema" "Price:100TL" 2025-03-07 14:00 2025-03-07 16:00
+    private void parseAddWish2(String line, WishManager wishManager) {
+        // Format: ADD_WISH2 W202 "Cinema Night" "Price:100TL" 2025-03-10 14:00 2025-03-10 16:00
         try {
             String rest = line.substring("ADD_WISH2".length()).trim();
 
-            // 1) Wish ID
             int sp = rest.indexOf(' ');
             String wishId = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
 
-            // 2) Title
             String title = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
-            // 3) Description (içinde "Price:..." olabilir)
             String desc = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
-            // 4) Start date/time
+            // Start date/time
             sp = rest.indexOf(' ');
             String startDateStr = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
@@ -395,7 +389,7 @@ public class FileManager {
             LocalDateTime startDt = LocalDateTime.of(LocalDate.parse(startDateStr),
                     LocalTime.parse(startTimeStr));
 
-            // 5) End date/time
+            // End date/time
             sp = rest.indexOf(' ');
             String endDateStr = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
@@ -404,43 +398,46 @@ public class FileManager {
             LocalDateTime endDt = LocalDateTime.of(LocalDate.parse(endDateStr),
                     LocalTime.parse(endTimeStr));
 
-            // Wish oluştur
             Wish w = new Wish(wishId, title, desc,
                     WishType.WISH2,
                     startDt, endDt,
                     child);
 
-            // PRICE PARSE: "Price:100TL" ifadesini description'dan çekelim
-            int priceValue = parsePriceFromDescription(desc);
-            w.setPrice(priceValue);
+            int priceVal = parsePriceFromDescription(desc);
+            w.setPrice(priceVal);
 
             child.addWish(w);
-            wm.addWish(w);
+            wishManager.addWish(w);
             System.out.println("ADD_WISH2 -> " + w.toString());
         } catch (Exception e) {
             System.out.println("Error parseAddWish2: " + e.getMessage());
         }
     }
+
+    // Price parse metodu
     private int parsePriceFromDescription(String desc) {
+        // "Price:150TL" ifadesini bulalım
         try {
             int idx = desc.indexOf("Price:");
             if (idx == -1) {
+                // "Price:" ifadesi bulunamadı => 0
                 return 0;
             }
-            // "Price:150TL, Brand:LEGO" => sonrasında "150TL, Brand:LEGO"
+            // "Price:150TL, Brand:LEGO" -> sub="150TL, Brand:LEGO"
             String sub = desc.substring(idx + 6);
-            // "150TL, Brand:LEGO"
-            // Sadece rakamları alalım:
+            // sadece rakamları alalım
             sub = sub.replaceAll("[^0-9]", ""); // "150"
-            return Integer.parseInt(sub);       // 150
+            if (sub.isEmpty()) {
+                return 0;
+            }
+            return Integer.parseInt(sub);
         } catch (Exception e) {
             return 0;
         }
     }
 
-    private void parseWishChecked(String line, WishManager wm) {
-        // WISH_CHECKED W201 APPROVED 2
-        // WISH_CHECKED W202 REJECTED
+    private void parseWishChecked(String line, WishManager wishManager) {
+        // WISH_CHECKED W203 APPROVED 2
         try {
             String rest = line.substring("WISH_CHECKED".length()).trim();
             int sp = rest.indexOf(' ');
@@ -451,21 +448,21 @@ public class FileManager {
             String decision = (sp == -1) ? rest : rest.substring(0, sp);
             String levelStr = (sp == -1) ? "" : rest.substring(sp).trim();
 
-            Wish w = wm.getWishById(wishId);
+            Wish w = wishManager.getWishById(wishId);
             if (w == null) {
                 System.out.println("Wish not found: " + wishId);
                 return;
             }
+
             if ("APPROVED".equals(decision)) {
                 int lvl = 1;
                 if (!levelStr.isEmpty()) {
                     lvl = Integer.parseInt(levelStr);
                 }
                 parent.approveWish(w, lvl);
-                System.out.println("Wish " + wishId + " => APPROVED, reqLevel=" + lvl);
+
             } else if ("REJECTED".equals(decision)) {
                 parent.rejectWish(w);
-                System.out.println("Wish " + wishId + " => REJECTED");
             } else {
                 System.out.println("Invalid decision: " + decision);
             }

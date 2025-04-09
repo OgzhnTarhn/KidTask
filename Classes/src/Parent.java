@@ -48,29 +48,34 @@ public class Parent extends User {
 
     public void approveWish(Wish wish, int requiredLevel) {
         if (wish.getStatus() == WishStatus.PENDING) {
-            // Çocuğun bu wish'i karşılayacak kadar puanı var mı?
             Child c = wish.getChild();
-            if (c != null) {
-                int price = wish.getPrice();
-                boolean success = c.deductPoints(price);
-                if (!success) {
-                    System.out.println("Child doesn't have enough budget (" + price + ") for this wish!");
-                    // Dileğin durumu PENDING kalsın veya REJECTED yapabilirsiniz.
-                    return;
-                }
-                // Yeterli bütçe varsa price düşülür
+            if (c == null) {
+                System.out.println("No associated child for this wish!");
+                return;
             }
+
+            int cost = wish.getPrice(); // Wish'in parası
+            boolean success = c.deductPoints(cost);
+            if (!success) {
+                System.out.println("Child doesn't have enough points ("
+                        + c.getTotalPoints() + ") for cost " + cost
+                        + ". Wish remains pending or reject if you want.");
+                // Yetersiz bakiye => isterseniz REJECT
+                // wish.setStatus(WishStatus.REJECTED);
+                return;
+            }
+
             wish.setStatus(WishStatus.APPROVED);
             wish.setRequiredLevel(requiredLevel);
-            System.out.println("Wish " + wish.getWishId() + " is approved. "
-                    + "Price " + wish.getPrice()
-                    + " deducted from child's account.");
+            System.out.println("Wish " + wish.getWishId() + " => APPROVED, "
+                    + cost + " points deducted from child's budget.");
         }
     }
 
     public void rejectWish(Wish wish) {
         if (wish.getStatus() == WishStatus.PENDING) {
             wish.setStatus(WishStatus.REJECTED);
+            System.out.println("Wish " + wish.getWishId() + " rejected.");
         }
     }
 

@@ -10,6 +10,8 @@ public class Wish {
     private LocalDateTime endTime;
     private int requiredLevel;
     private Child child;
+
+    // YENİ: price alanı
     private int price;
 
     public Wish(String wishId,
@@ -29,14 +31,7 @@ public class Wish {
         this.status = WishStatus.PENDING;
         this.requiredLevel = 1;
         this.child = child;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getPrice() {
-        return price;
+        this.price = 0; // Varsayılan
     }
 
     public String getWishId() {
@@ -75,8 +70,22 @@ public class Wish {
         return child;
     }
 
+    // Price alanı için getter/setter
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
-        return "Wish[" + wishId + ", " + title + ", " + wishType + ", status=" + status + "]";
+        return "Wish[" + wishId
+                + ", " + title
+                + ", " + wishType
+                + ", status=" + status
+                + ", price=" + price
+                + "]";
     }
 }
