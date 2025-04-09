@@ -141,17 +141,25 @@ public class FileManager {
         }
     }
 
-    // --- Yeni parseListAllTasks metodu (D / V)
     private void parseListAllTasks(String cmd, TaskManager tm) {
-        // cmd örn: "LIST_ALL_TASKS D" veya "LIST_ALL_TASKS W"
-        String rest = cmd.substring("LIST_ALL_TASKS".length()).trim();
-        if (rest.isEmpty()) {
-            // Parametre yoksa hata veriyor
-            System.out.println("Error: Missing parameter. Use 'LIST_ALL_TASKS D' or 'LIST_ALL_TASKS W'.");
-            return;
-        }
+        // Komut satırı: "LIST_ALL_TASKS" veya "LIST_ALL_TASKS D" veya "LIST_ALL_TASKS W"
 
-        if (rest.equals("D")) {
+        // 'LIST_ALL_TASKS' ifadesini sil, geriye parametre kalıyor
+        String rest = cmd.substring("LIST_ALL_TASKS".length()).trim();
+
+        if (rest.isEmpty()) {
+            // Parametre yok => Tüm görevleri listele
+            System.out.println("All tasks (no filter):");
+            List<Task> all = tm.getAllTasks();
+            if (all.isEmpty()) {
+                System.out.println("No tasks found.");
+            } else {
+                for (Task t : all) {
+                    System.out.println(t.toString());
+                }
+            }
+        } else if (rest.equals("D")) {
+            // Daily liste
             System.out.println("Daily tasks:");
             List<Task> daily = tm.getDailyTasks();
             if (daily.isEmpty()) {
@@ -161,7 +169,8 @@ public class FileManager {
                     System.out.println(t.toString());
                 }
             }
-        } else if (rest.equals("V")) {
+        } else if (rest.equals("W")) {
+            // Weekly liste
             System.out.println("Weekly tasks:");
             List<Task> weekly = tm.getWeeklyTasks();
             if (weekly.isEmpty()) {
@@ -172,7 +181,9 @@ public class FileManager {
                 }
             }
         } else {
-            System.out.println("Unknown parameter: " + rest + ". Only 'D' or 'W' are allowed.");
+            // Hatalı parametre
+            System.out.println("Unknown parameter: " + rest
+                    + ". Use 'LIST_ALL_TASKS' or 'LIST_ALL_TASKS D' or 'LIST_ALL_TASKS W'.");
         }
     }
     private void parseAddTask1(String line, TaskManager tm) {
