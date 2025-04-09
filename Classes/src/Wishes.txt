@@ -1,7 +1,12 @@
 # Wishes.txt
-# WISH1;WID;"Title";"Desc";start;end
-# WISH2;WID;"Title";"Desc";start;end
+# Format:
+# WISHx;WishID;"Title";"Description";startTime;endTime
+# "Price:..." ifadesi description içinde.
+# WISH1 => Ürün (start/end time yok, null)
+# WISH2 => Aktivite (start/end time dolu)
 
-WISH1;W201;"Lego Set";"150 TL";null;null
-WISH2;W202;"Cinema Night";"Popcorn";2025-04-10T14:00;2025-04-10T16:00
-WISH1;W203;"New Book";"Fantasy series";null;null
+WISH1;W201;"Lego Set";"Price:150TL, Brand:LEGO";null;null
+WISH1;W202;"New Book";"Price:80TL, Fantasy Novel";null;null
+
+WISH2;W203;"Cinema Night";"Price:100TL, with popcorn";2025-03-10T14:00;2025-03-10T16:00
+WISH2;W204;"Amusement Park";"Price:250TL, includes rides";2025-06-01T09:00;2025-06-01T18:00

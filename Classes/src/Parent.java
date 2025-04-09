@@ -31,23 +31,40 @@ public class Parent extends User {
     }
 
     public void approveTask(Task task, int rating) {
+        // Task DONE olduktan sonra onaylanabilir
         if (task.getStatus() == TaskStatus.DONE) {
             task.setStatus(TaskStatus.APPROVED);
             task.setRating(rating);
 
-            // Puan ve rating ile çocuğun seviyesi güncellensin
+            // Puan eklenmeli
             Child child = task.getAssignedChild();
             if (child != null) {
                 child.addPoints(task.getPoints());
-                child.updateLevelByRating(rating);
+                // Rating ortalaması güncellenecek
+                child.recalculateRating();
             }
         }
     }
 
     public void approveWish(Wish wish, int requiredLevel) {
         if (wish.getStatus() == WishStatus.PENDING) {
+            // Çocuğun bu wish'i karşılayacak kadar puanı var mı?
+            Child c = wish.getChild();
+            if (c != null) {
+                int price = wish.getPrice();
+                boolean success = c.deductPoints(price);
+                if (!success) {
+                    System.out.println("Child doesn't have enough budget (" + price + ") for this wish!");
+                    // Dileğin durumu PENDING kalsın veya REJECTED yapabilirsiniz.
+                    return;
+                }
+                // Yeterli bütçe varsa price düşülür
+            }
             wish.setStatus(WishStatus.APPROVED);
             wish.setRequiredLevel(requiredLevel);
+            System.out.println("Wish " + wish.getWishId() + " is approved. "
+                    + "Price " + wish.getPrice()
+                    + " deducted from child's account.");
         }
     }
 

@@ -31,11 +31,10 @@ public class Teacher extends User {
         if (task.getStatus() == TaskStatus.DONE) {
             task.setStatus(TaskStatus.APPROVED);
             task.setRating(rating);
-
             Child child = task.getAssignedChild();
             if (child != null) {
                 child.addPoints(task.getPoints());
-                child.updateLevelByRating(rating);
+                child.recalculateRating();
             }
         }
     }

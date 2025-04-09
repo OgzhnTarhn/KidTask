@@ -301,20 +301,25 @@ public class FileManager {
     }
 
     private void parseTaskChecked(String line, TaskManager tm) {
+        // Format: TASK_CHECKED 101 5
         try {
             String rest = line.substring("TASK_CHECKED".length()).trim();
             int sp = rest.indexOf(' ');
             String taskId = rest.substring(0, sp);
             String ratingStr = rest.substring(sp).trim();
 
-            int rating = Integer.parseInt(ratingStr);
+            int rating = Integer.parseInt(ratingStr); // 1–5
 
+            // Görevi bul
             Task t = tm.getTaskById(taskId);
             if (t == null) {
                 System.out.println("Task not found: " + taskId);
                 return;
             }
+
+            // Kim onaylayacak? Teacher / Parent. Örneğin parent onaylıyor:
             parent.approveTask(t, rating);
+
             System.out.println("Task " + taskId + " => checked with rating " + rating);
         } catch (Exception e) {
             System.out.println("Error parseTaskChecked: " + e.getMessage());
@@ -322,25 +327,38 @@ public class FileManager {
     }
 
     private void parseAddWish1(String line, WishManager wm) {
-        // ADD_WISH1 W301 "Rollerblades" "200 TL"
+        // Format: ADD_WISH1 W102 "Lego Set" "Price:150TL, Brand:LEGO"
+        // (WISH1 => ürün, price eklenecek, start/end time yok)
+
         try {
             String rest = line.substring("ADD_WISH1".length()).trim();
+            // 1) Wish ID
             int sp = rest.indexOf(' ');
             String wishId = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
 
+            // 2) Title
             String title = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
+            // 3) Description
             String desc = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
+            // Wish oluştur (WISH1 => ürün, startTime / endTime yok)
             Wish w = new Wish(wishId, title, desc,
                     WishType.WISH1,
-                    null, null,
+                    null, null, // no start/end time
                     child);
+
+            // Price parse edelim (desc => "Price:150TL, Brand:LEGO")
+            int priceValue = parsePriceFromDescription(desc);
+            w.setPrice(priceValue);
+
+            // Çocuğun dilek listesine ekleyelim
             child.addWish(w);
             wm.addWish(w);
+
             System.out.println("ADD_WISH1 -> " + w.toString());
         } catch (Exception e) {
             System.out.println("Error parseAddWish1: " + e.getMessage());
@@ -348,21 +366,24 @@ public class FileManager {
     }
 
     private void parseAddWish2(String line, WishManager wm) {
-        // ADD_WISH2 W302 "Amusement Park" "Entrance + Rides" 2025-05-01 10:00 2025-05-01 18:00
+        // Format: ADD_WISH2 W103 "Go to the Cinema" "Price:100TL" 2025-03-07 14:00 2025-03-07 16:00
         try {
             String rest = line.substring("ADD_WISH2".length()).trim();
 
+            // 1) Wish ID
             int sp = rest.indexOf(' ');
             String wishId = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
 
+            // 2) Title
             String title = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
+            // 3) Description (içinde "Price:..." olabilir)
             String desc = extractQuotedText(rest);
             rest = removeFirstQuotedText(rest).trim();
 
-            // start date/time
+            // 4) Start date/time
             sp = rest.indexOf(' ');
             String startDateStr = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
@@ -374,7 +395,7 @@ public class FileManager {
             LocalDateTime startDt = LocalDateTime.of(LocalDate.parse(startDateStr),
                     LocalTime.parse(startTimeStr));
 
-            // end date/time
+            // 5) End date/time
             sp = rest.indexOf(' ');
             String endDateStr = rest.substring(0, sp);
             rest = rest.substring(sp).trim();
@@ -383,14 +404,37 @@ public class FileManager {
             LocalDateTime endDt = LocalDateTime.of(LocalDate.parse(endDateStr),
                     LocalTime.parse(endTimeStr));
 
+            // Wish oluştur
             Wish w = new Wish(wishId, title, desc,
-                    WishType.WISH2, startDt, endDt, child);
+                    WishType.WISH2,
+                    startDt, endDt,
+                    child);
+
+            // PRICE PARSE: "Price:100TL" ifadesini description'dan çekelim
+            int priceValue = parsePriceFromDescription(desc);
+            w.setPrice(priceValue);
+
             child.addWish(w);
             wm.addWish(w);
-
             System.out.println("ADD_WISH2 -> " + w.toString());
         } catch (Exception e) {
             System.out.println("Error parseAddWish2: " + e.getMessage());
+        }
+    }
+    private int parsePriceFromDescription(String desc) {
+        try {
+            int idx = desc.indexOf("Price:");
+            if (idx == -1) {
+                return 0;
+            }
+            // "Price:150TL, Brand:LEGO" => sonrasında "150TL, Brand:LEGO"
+            String sub = desc.substring(idx + 6);
+            // "150TL, Brand:LEGO"
+            // Sadece rakamları alalım:
+            sub = sub.replaceAll("[^0-9]", ""); // "150"
+            return Integer.parseInt(sub);       // 150
+        } catch (Exception e) {
+            return 0;
         }
     }
 

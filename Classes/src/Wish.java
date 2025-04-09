@@ -10,6 +10,7 @@ public class Wish {
     private LocalDateTime endTime;
     private int requiredLevel;
     private Child child;
+    private int price;
 
     public Wish(String wishId,
                 String title,
@@ -28,6 +29,14 @@ public class Wish {
         this.status = WishStatus.PENDING;
         this.requiredLevel = 1;
         this.child = child;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
     public String getWishId() {
