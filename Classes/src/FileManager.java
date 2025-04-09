@@ -63,10 +63,14 @@ public class FileManager {
             String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                if (line.isEmpty() || line.startsWith("#")) continue;
+                if (line.isEmpty() || line.startsWith("#"))
+                    continue;
 
+                // Beklenen format:
+                // WISH1;W201;"Lego Set";"Price:150TL, Brand:LEGO";null;null
+                // WISH2;W202;"Cinema Night";"Price:100TL, with popcorn";2025-03-10T14:00;2025-03-10T16:00
                 String[] parts = line.split(";");
-                String wishTypeStr = parts[0]; // "WISH1" / "WISH2"
+                String wishTypeStr = parts[0];
                 String wishId = parts[1];
                 String title = parts[2].replace("\"", "");
                 String desc = parts[3].replace("\"", "");
@@ -79,9 +83,13 @@ public class FileManager {
                     endTime = LocalDateTime.parse(parts[5]);
                 }
 
-                WishType wType = (wishTypeStr.equals("WISH1")) ? WishType.WISH1 : WishType.WISH2;
+                WishType wType = wishTypeStr.equals("WISH1") ? WishType.WISH1 : WishType.WISH2;
                 Wish newWish = new Wish(wishId, title, desc, wType,
                         startTime, endTime, child);
+                // Yeni: Description içindeki fiyat bilgisini alıyoruz
+                int price = parsePriceFromDescription(desc);
+                newWish.setPrice(price);
+
                 child.addWish(newWish);
                 wishManager.addWish(newWish);
             }
@@ -416,16 +424,16 @@ public class FileManager {
 
     // Price parse metodu
     private int parsePriceFromDescription(String desc) {
-        // "Price:150TL" ifadesini bulalım
         try {
-            int idx = desc.indexOf("Price:");
+            // Tüm karakterleri küçük harfe çevirerek "price:" ifadesini bulalım.
+            String lowerDesc = desc.toLowerCase();
+            int idx = lowerDesc.indexOf("price:");
             if (idx == -1) {
-                // "Price:" ifadesi bulunamadı => 0
                 return 0;
             }
-            // "Price:150TL, Brand:LEGO" -> sub="150TL, Brand:LEGO"
-            String sub = desc.substring(idx + 6);
-            // sadece rakamları alalım
+            // "price:" ifadesinin hemen sonrasından itibaren metni al.
+            String sub = lowerDesc.substring(idx + 6).trim(); // Örn: "150tl, brand:lego"
+            // Rakam olmayan tüm karakterleri çıkaralım.
             sub = sub.replaceAll("[^0-9]", ""); // "150"
             if (sub.isEmpty()) {
                 return 0;

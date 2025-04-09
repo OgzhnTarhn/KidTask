@@ -61,7 +61,7 @@ public class Parent extends User {
                         + c.getTotalPoints() + ") for cost " + cost
                         + ". Wish remains pending or reject if you want.");
                 // Yetersiz bakiye => isterseniz REJECT
-                // wish.setStatus(WishStatus.REJECTED);
+                wish.setStatus(WishStatus.REJECTED);
                 return;
             }
 
