@@ -53,6 +53,12 @@ public class Parent extends User {
                 System.out.println("No associated child for this wish!");
                 return;
             }
+            if (c.getCurrentLevel() < requiredLevel) {
+                System.out.println("Child's level (" + c.getCurrentLevel() + ") is insufficient for required level "
+                        + requiredLevel + ". Rejecting wish " + wish.getWishId());
+                wish.setStatus(WishStatus.REJECTED);
+                return;
+            }
 
             int cost = wish.getPrice(); // Wish'in parası
             boolean success = c.deductPoints(cost);
