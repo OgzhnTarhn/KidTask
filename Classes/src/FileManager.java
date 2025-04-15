@@ -21,7 +21,6 @@ public class FileManager {
             String line;
             while ((line = br.readLine()) != null) {
                 line = line.trim();
-                // Yorum veya boş satır atla
                 if (line.isEmpty() || line.startsWith("#")) continue;
 
                 String[] parts = line.split(";");
@@ -86,7 +85,7 @@ public class FileManager {
                 WishType wType = wishTypeStr.equals("WISH1") ? WishType.WISH1 : WishType.WISH2;
                 Wish newWish = new Wish(wishId, title, desc, wType,
                         startTime, endTime, child);
-                // Yeni: Description içindeki fiyat bilgisini alıyoruz
+                //Description içindeki fiyat bilgisini alıyoruz
                 int price = parsePriceFromDescription(desc);
                 newWish.setPrice(price);
 
@@ -282,9 +281,9 @@ public class FileManager {
             User user = ("T".equals(userType)) ? teacher : parent;
             Task newTask = new Task(taskId, title, desc,
                     TaskType.TASK2,
-                    deadline, // we can use as "deadline" param
-                    deadline, // startTime
-                    endDt,    // endTime
+                    deadline,
+                    deadline,
+                    endDt,
                     points,
                     user);
             newTask.setAssignedChild(child);
@@ -425,7 +424,7 @@ public class FileManager {
     // Price parse metodu
     private int parsePriceFromDescription(String desc) {
         try {
-            // Tüm karakterleri küçük harfe çevirerek "price:" ifadesini bulalım.
+            // Tüm karakterleri küçük harfe çevirerek "price" ifadesini bulalım.
             String lowerDesc = desc.toLowerCase();
             int idx = lowerDesc.indexOf("price:");
             if (idx == -1) {
@@ -443,7 +442,8 @@ public class FileManager {
             return 0;
         }
     }
-
+     //Eğer wish approved olsa bile çocuğun puanı veya leveli yetmiyorsa rejected durumuna düşüyor.
+    //Kendim bu şekilde daha mantıklı olacağına karar verdim.
     private void parseWishChecked(String line, WishManager wishManager) {
         // WISH_CHECKED W203 APPROVED 2
         try {

@@ -37,6 +37,8 @@ public class TaskManager {
 
     // -------------------------------------------------------------------------
     // FİLTRE METOTLARI
+    // En büyük sorun TASK2'de filtreleme yaparken nasıl filtreleme yapmam gerektiğini bilemedim.
+    // İlk tarihlerine bakarak o şekilde filtreleme yaptım :D
     // -------------------------------------------------------------------------
     public List<Task> getDailyTasks() {
         // Bugünün tarihine denk gelenleri alıyoruz
@@ -61,7 +63,7 @@ public class TaskManager {
     }
 
     public List<Task> getWeeklyTasks() {
-        // Bugün + 7 gün
+        // Bugün + 7 gün mantığıyla düşündüm
         LocalDate today = LocalDate.now();
         LocalDate weekLater = today.plusDays(7);
         List<Task> result = new ArrayList<>();

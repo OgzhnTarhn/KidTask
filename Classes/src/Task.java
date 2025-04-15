@@ -35,7 +35,6 @@ public class Task {
         this.assignedBy = assignedBy;
     }
 
-    // Getter metodları (eksik kalmasın)
     public String getTaskId() {
 
         return taskId;

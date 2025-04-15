@@ -8,7 +8,7 @@ public class WishManager {
         this.wishes = new ArrayList<>();
     }
 
-    public void addWish(Wish wish) {
+    public void addWish(Wish wish)   {
         wishes.add(wish);
     }
 

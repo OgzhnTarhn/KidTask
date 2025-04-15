@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 public class Teacher extends User {
 
     public Teacher(String userId, String name) {
-        // Rol sabit: "Teacher"
+
         super(userId, name, "Teacher");
     }
 

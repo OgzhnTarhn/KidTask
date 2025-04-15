@@ -6,8 +6,8 @@ LIST_ALL_TASKS D
 LIST_ALL_TASKS W
 
 # 2) Yeni görev eklemeleri
-ADD_TASK1 T 105 "English Homework" "Learn a new content" 2025-04-11 23:56 10
-ADD_TASK2 F 106 "Painting" "Draw a scenery" 2025-04-05 14:00 2025-04-09 23:30 8
+ADD_TASK1 T 105 "English Homework" "Learn a new content" 2025-04-18 23:56 10
+ADD_TASK2 F 106 "Painting" "Draw a scenery" 2025-04-19 14:00 2025-04-19 23:30 8
 
 # 3) Görevleri daily liste görelim
 LIST_ALL_TASKS D
@@ -21,7 +21,7 @@ TASK_DONE 101
 TASK_CHECKED 101 1
 # 5) Wish ekleme
 ADD_WISH1 W102 "Lego Set" "Price:150TL, Brand:LEGO"
-ADD_WISH2 W103 "Go to the Cinema" "Price:100TL" 2025-04-07 14:00 2025-04-07 18:00
+ADD_WISH2 W103 "Go to the Cinema" "Price:100TL" 2025-05-07 14:00 2025-05-07 18:00
 
 # 6) Tüm dilekler?
 LIST_ALL_WISHES

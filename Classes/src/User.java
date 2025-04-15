@@ -1,7 +1,7 @@
 public abstract class User {
     private String userId;
     private String name;
-    private String userRole; // Yeni alan
+    private String userRole;
 
     public User(String userId, String name, String userRole) {
         this.userId = userId;

@@ -9,7 +9,6 @@ public class Child extends User {
     private List<Wish> wishes;
 
     public Child(String userId, String name) {
-        // Rol sabit: "Child"
         super(userId, name, "Child");
         this.tasks = new ArrayList<>();
         this.wishes = new ArrayList<>();
@@ -87,6 +86,7 @@ public class Child extends User {
             currentLevel = 4;
         }
     }
+    //CALCULATE RATİNG
     public void recalculateRating() {
         // Tüm "APPROVED" görevlerin rating'lerini topla
         double sum = 0;
