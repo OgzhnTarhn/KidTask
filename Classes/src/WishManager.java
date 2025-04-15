@@ -25,7 +25,6 @@ public class WishManager {
         return wishes;
     }
 
-    // Onay / Red komutları (pratikte Parent veya Manager da yapabilir)
     public void approveWish(String wishId, int requiredLevel) {
         Wish w = getWishById(wishId);
         if (w != null && w.getStatus() == WishStatus.PENDING) {

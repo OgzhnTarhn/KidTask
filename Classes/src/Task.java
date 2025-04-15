@@ -37,15 +37,19 @@ public class Task {
 
     // Getter metodları (eksik kalmasın)
     public String getTaskId() {
+
         return taskId;
     }
     public String getTitle() {
+
         return title;
     }
     public String getDescription() {
+
         return description;
     }
     public TaskType getTaskType() {
+
         return taskType;
     }
     public LocalDateTime getDeadline() {
@@ -73,7 +77,6 @@ public class Task {
         return assignedChild;
     }
 
-    // Setter metodları
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
@@ -84,7 +87,6 @@ public class Task {
         this.assignedChild = assignedChild;
     }
 
-    // toString (isteğe bağlı, debug amaçlı)
     @Override
     public String toString() {
         return "Task[" + taskId + ", " + title + ", " + taskType + ", status=" + status + "]";

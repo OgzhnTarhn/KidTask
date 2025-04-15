@@ -10,8 +10,6 @@ public class Wish {
     private LocalDateTime endTime;
     private int requiredLevel;
     private Child child;
-
-    // YENİ: price alanı
     private int price;
 
     public Wish(String wishId,
